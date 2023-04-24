@@ -3,8 +3,8 @@ import cv2
 import numpy as np
 
 # Load a sample picture and learn how to recognize it.
-image_paths = ["D:/PycharmProjects/facialRec/donaldTrump.jpeg", "D:/PycharmProjects/facialRec/Joe_Biden.jpg",
-               "D:/PycharmProjects/facialRec/elaySason_low_cloaked.png"]
+image_paths = ["./donaldTrump.jpeg", "./Joe_Biden.jpg",
+               "./elaySason.jpg"]
 
 recognized_face_encodings = []
 for path in image_paths:
@@ -33,7 +33,7 @@ while True:
     # Read one frame from the video
     ret, frame = vidCapture.read()
 
-    # make the image 80% smaller in order to make the processing quicker
+    # make the image 75% smaller in order to make the processing quicker
     smaller_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
     # Transforming form BGR to RGB to make the image compatible with face_recognition
@@ -51,12 +51,7 @@ while True:
             matches = face_recognition.compare_faces(recognized_face_encodings, face_encoding)
             name = "Unknown"
 
-            # # If a match was found in known_face_encodings, just use the first one.
-            # if True in matches:
-            #     first_match_index = matches.index(True)
-            #     name = known_face_names[first_match_index]
-
-            # Or instead, use the known face with the smallest distance to the new face
+           
             face_distances = face_recognition.face_distance(recognized_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
             if matches[best_match_index]:
@@ -64,7 +59,7 @@ while True:
 
             face_names.append(name)
 
-    process_this_frame = not process_current_frame
+    process_current_frame = not process_current_frame
 
     # Display the results
     for (top, right, bottom, left), name in zip(face_locations, face_names):
